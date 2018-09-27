@@ -1,0 +1,410 @@
+<!-- Store request variables -->
+<script type="text/javascript">
+	window._application_user_id = {{ request.user.id }};
+	window._application_csrfmiddlewaretoken = "{{csrfmiddlewaretoken}}";
+</script>
+
+<div id="appDoLogin" v-show="!shared.showTable">
+	<!-- Do Login Modal -->
+	<div id="doLogin" class="reveal-modal small" data-reveal>
+		<div class="adminBlock">
+				<h2 class="setting-header">
+					Login to Logins&trade;
+				</h2>
+		</div>
+
+		<h4 class="modal-detail">Password</h4>
+		<br>
+		<div class="text-input-field relative">
+			<input type="password" class="input-outline" placeholder= ""  name="password" v-model="user_password">
+		</div>
+
+		<br><br>
+		<h5><i>Please re-enter your django password.</i></h5>
+		<br><br>
+
+		<div class="row collapse">
+			<div class="column medium-12 left ">
+				<a href="/" class="close-reveal-modal button" v-on:click="redirectToMain()">Cancel</a>
+			</div>
+			<div class="column medium-12 right">
+				{% csrf_token %}
+				<input id='doLogin' class = "button-right" type="submit" value="Save" v-on:click="executeLogin()">
+			</div>
+		</div>
+
+	</div>
+</div>
+
+<div id="appLoginsViewer" v-show="shared.showTable">
+
+	<!--Logins Viewer -->
+	<div class="adminBlock">
+		<div class="row">
+			<div class="medium-24 column">
+				<div class="medium-4 column">
+					<h2 class="setting-header">
+						Logins&trade;
+						<a href="#add-password" data-reveal-id="addOrChangeLoginModal" class="add-button" value="Add Password"><span class="icon-plus"></span></a>
+					</h2>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="column">
+				<table cellspacing="0" cellpadding="10" class="prettyTable align-to-setting-title">
+					<tr class = "odd-tr">
+						<th width=20%><strong>Organization</strong></th>
+						<th width=20% class="hide-for-small"><strong>Login URL</strong></th>
+						<th width=20%><strong>Username</strong></th>
+						<th width=30%><strong>Password</strong></th>
+						<th width=10% class="hide-for-small" width=120><strong>Actions</strong></th>
+					</tr>
+
+					{% for login in logins %}
+					<tr class="{% cycle 'even-tr' 'odd-tr' %}">
+						<td> {{ login.organization_name }}</td>
+						<td class="hide-for-small">{{ login.login_url }}</td>
+						<td>{{ login.user_name }}</td>
+						<td>
+							<div class="row collapse">
+								<div class="column medium-18 ">
+										<input id="passwordInput_{{forloop.counter}}" type="password" value="{{ login.password }}" class="invisible-input" readonly>
+								</div>
+								<div class="column medium-6">
+									<a id="passwordToggler_{{forloop.counter}}" href="#" onclick="togglePassword({{ forloop.counter }})">Show</a>
+								</div>
+							</div>
+						</td>
+						<td class="hide-for-small">
+						{% if login.can_edit %}
+							<!--<form class="custom" method="POST" action="{% url 'user_aed' aed_type='delete' user_id=user.id %}" style="margin-bottom:0px;">
+							{% csrf_token %}
+							a href="{% url 'user_aed' aed_type='edit' user_id=user.id %}">Change</a-->
+							<a href="#change-login" data-reveal-id="addOrChangeLoginModal" class="change" value="Change Login">Change</a>
+							 |
+							<a href="#delete-login" data-reveal-id="deleteLoginModal" class="delete" value="Delete Login">Delete</a>
+							</form>
+						{% else %}
+							N/A
+						{% endif %}
+						</td>
+					</tr>
+
+					{% empty %}
+
+					<tr>
+						<td colspan="{{ logins|length|add:1 }}" style="text-align:center;">Currently No Items to Show</td>
+					</tr>
+
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<!-- Add or Change Login Modal -->
+	<div id="addOrChangeLoginModal" class="reveal-modal small" data-reveal>
+		<div class="adminBlock">
+				<h2 class="setting-header">
+					Login Details
+				</h2>
+		</div>
+
+		<h4 class="modal-detail">Name of Organization</h4>
+		<div class="text-input-field relative">
+			<input type="text" placeholder=""  name="organization_name">
+		</div>
+
+		<h4 class="modal-detail">Login URL</h4>
+		<div class="text-input-field relative">
+			<input type="text" placeholder=""  name="login_url">
+		</div>
+
+		<div class="row collapse">
+			<div class="column medium-12 left">
+				<h4 class="modal-detail">Username</h4>
+				<div class="text-input-field relative">
+					<input type="text" placeholder=""  name="user_name">
+				</div>
+			</div>
+			<div class="column medium-12 right">
+				<h4 class="modal-detail">Confirm Password</h4>
+				<div class="text-input-field relative">
+					<input type="text" placeholder=""  name="password">
+				</div>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="row collapse">
+			<div class="column medium-12 left ">
+					<a href="#" class="close-reveal-modal button">Cancel</a>
+			</div>
+			<div class="column medium-12 right">
+				{% csrf_token %}
+				<form method="post" class="custom">
+					<input id='saveAddLogin' class = "button-right" type="submit" value="Save" >
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+	<!-- Delete Login Modal -->
+	<div id="deleteLoginModal" class="reveal-modal small" data-reveal>
+		<div class="adminBlock">
+				<h2 class="setting-header">
+					Delete Login
+				</h2>
+		</div>
+
+		<h4 class="modal-detail">Are you sure you want to delete this login? This operation cannot be reversed.</h4>
+
+		<br>
+
+		<div class="row collapse">
+			<div class="column medium-12 left ">
+					<a href="#" class="close-reveal-modal button">Cancel</a>
+			</div>
+			<div class="column medium-12 right">
+				{% csrf_token %}
+				<form method="post" class="custom">
+					<input id='deleteLogin' class = "button-right" type="submit" value="Delete" >
+				</form>
+			</div>
+		</div>
+
+	</div>
+
+</div>
+
+
+{# Styles #}
+<style type="text/css">
+	.formRow { margin-bottom: 26px; }
+	.adminBlock .buttonStyle { display: inline-block; }
+
+	/******************* Modals ******************/
+	.separator-line{
+		border-bottom: solid #E8E8E8 1px;
+		margin-top: 5px !important;
+		margin-bottom: 15px !important;
+		padding-bottom: 10px;
+	}
+
+	.modal-detail{
+		font-size: 13px;
+		margin-top: 15px !important;
+		margin-bottom: 5px !important;
+	}
+
+	.modal-label{
+		font-size: 13px;
+		margin-top: 15px !important;
+		margin-bottom: 5px !important;
+	}
+
+	.column.medium-12.left{
+		padding-right: 10px;
+	}
+
+	.column.medium-12.right{
+		padding-left: 10px;
+	}
+
+	.close-reveal-modal.button{
+		background-color: #A0A0A0;
+		color: #FFFFFF;
+		padding: 0;
+		border: none;
+		padding:.5em 1em;
+		font-size: 16px;
+		line-height: 1;
+		top: 0em;
+		right: 0em;
+		font-weight: normal;
+		position: relative;
+		width: 94px;
+	}
+
+	.cancel-button{
+		background-color: #A0A0A0;
+		color: #FFFFFF;
+		padding: 0;
+		border: none;
+		padding:.5em 1em;
+		font-size: 16px;
+		line-height: 1;
+		top: 0em;
+		right: 0em;
+		font-weight: normal;
+		position: relative;
+		width: 94px;
+		text-decoration: none;
+	}
+
+	.button-right{
+		width: 94px;
+		float: right;
+	}
+
+
+	/******************* Logins Viewer ******************/
+	input[readonly].invisible-input{
+		border: 0;
+	  outline: 0;
+	  background: transparent !important;
+	  background-color: transparent !important;
+	  font-size: 1em;
+		margin: 0px;
+		height: 1em;
+		width: 100%;
+		line-height: 2.00; /* Key property */
+
+	}
+
+	input.input-outline{
+		border: 0;
+	  outline: 0;
+	  background: transparent !important;
+	  background-color: transparent !important;
+	  font-size: 1em;
+		margin: 0px;
+		height: 1em;
+		width: 100%;
+		line-height: 2.00; /* Key property */
+		border-bottom: 1px solid #EAEAEA;
+	}
+
+	.odd-tr{
+		background: #FAFAFA;
+		background-color: #FAFAFA;
+	}
+
+	.even-tr{
+		background: transparent;
+		background-color: transparent;
+	}
+
+	.prettyTable th { text-align: left; }
+	.prettyTable td { text-align:left; }
+	.prettyTable th:first-child, .prettyTable td:first-child { text-align: left; padding-left: 10px; }
+	.prettyTable th:last-child, .prettyTable td:last-child { text-align: left; padding-left: 10px; }
+</style>
+
+{# Scripts #}
+
+<script type="text/javascript">
+	// Function to toggle visibility of passwords on screen
+	function togglePassword(pass_id) {
+	    var passwordInput = document.getElementById('passwordInput_'+pass_id)
+			var passwordToggler = document.getElementById('passwordToggler_'+pass_id)
+
+	    if (passwordInput.type === "password") {
+	        passwordInput.type = "text";
+					passwordToggler.text = "Hide";
+	    } else {
+	        passwordInput.type = "password";
+					passwordToggler.text = "Show";
+	    }
+	}
+</script>
+
+<!-- Vuejs -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.0"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<!-- Login to Logins App -->
+<script type="text/javascript">
+	// Set CSRF token
+	axios.defaults.headers.common['X-CSRFToken'] =
+		window._application_csrfmiddlewaretoken; // for all requests
+
+	var store = {
+		showTable: false,
+		temporary_key: ""
+	};
+
+	var appDoLogin = new Vue({
+		el: '#appDoLogin',
+		delimiters: ['[[', ']]'],
+		data: {
+		    shared: store
+		},
+		methods: {
+			invokeLoginModal: function () {
+				$('#doLogin').foundation('reveal', 'open');
+			},
+
+			redirectToMain: function () {
+				window.location.href = '/';
+			},
+
+			executeLogin: function () {
+				var urlToUse = 'user/' + window._application_user_id
+					+ '/temporary_key/';
+
+				// Execute request to server and handle response
+				axios.post(urlToUse, {
+			    password: this.user_password
+				}).then(function(response){
+					// Dismiss login modal
+					$('a.close-reveal-modal').trigger('click');
+					// Tell apps to show logins table and store temporary key locally
+					appDoLogin.shared.showTable = true;
+					appDoLogin.shared.temporary_key = response.data.temporary_key;
+				}).catch(function (error){
+					if (error.response) {
+						// If error, then alert and redirect
+						alert("Password is incorrect or user is not allowed!");
+						// Redirects to default application
+						window.location.href = '/';
+					}
+				});
+			},
+
+		},
+
+    mounted: function () {
+      this.invokeLoginModal();
+    }
+
+	});
+
+	var appLoginsViewer = new Vue({
+		el: '#appLoginsViewer',
+		delimiters: ['[[', ']]'],
+		data: {
+		    shared: store
+		},
+
+    methods: {
+
+    },
+
+    mounted: function () {
+
+    }
+
+		/*executeLogin: function () {
+				var urlToUse = 'user/1/temporary_key/';
+				axios.get(urlToUse)
+				.then(function(){
+
+
+				})
+				.catch(function (error) {
+						if (error.response) {
+								alert(error.response.body);
+					}
+				});
+
+		},*/
+
+	});
+
+</script>
