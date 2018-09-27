@@ -1,2 +1,2 @@
 # django-password-manager
-Simple password manager written using Django and Vue.js
+A password manager for Django where you can put your passwords in a very secure way.
