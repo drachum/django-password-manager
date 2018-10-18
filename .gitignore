@@ -1,6 +1,20 @@
+# Django files
 venv/
 __pycache__
 *.un*
 *.sw*
 db.sqlite3
 
+# Node Files
+.DS_Store
+node_modules/
+dist/
+npm-debug.log
+yarn-error.log
+
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
