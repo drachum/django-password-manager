@@ -1,0 +1,113 @@
+.formRow { margin-bottom: 26px; }
+.adminBlock .buttonStyle { display: inline-block; }
+
+/******************* Modals ******************/
+.separator-line{
+  border-bottom: solid #E8E8E8 1px;
+  margin-top: 5px !important;
+  margin-bottom: 15px !important;
+  padding-bottom: 10px;
+}
+
+.modal-detail{
+  font-size: 13px;
+  margin-top: 15px !important;
+  margin-bottom: 5px !important;
+}
+
+.modal-label{
+  font-size: 13px;
+  margin-top: 15px !important;
+  margin-bottom: 5px !important;
+}
+
+.column.medium-12.left{
+  padding-right: 10px;
+}
+
+.column.medium-12.right{
+  padding-left: 10px;
+}
+
+.close-reveal-modal.button{
+  background-color: #A0A0A0;
+  color: #FFFFFF;
+  padding: 0;
+  border: none;
+  padding:.5em 1em;
+  font-size: 16px;
+  line-height: 1;
+  top: 0em;
+  right: 0em;
+  font-weight: normal;
+  position: relative;
+  width: 94px;
+}
+
+.cancel-button{
+  background-color: #A0A0A0;
+  color: #FFFFFF;
+  padding: 0;
+  border: none;
+  padding:.5em 1em;
+  font-size: 16px;
+  line-height: 1;
+  top: 0em;
+  right: 0em;
+  font-weight: normal;
+  position: relative;
+  width: 94px;
+  text-decoration: none;
+}
+
+.button-right{
+  width: 94px;
+  float: right;
+}
+
+.field-alert{
+  color: red;
+}
+
+
+/******************* Logins Viewer ******************/
+input[readonly].invisible-input{
+  border: 0;
+  outline: 0;
+  background: transparent !important;
+  background-color: transparent !important;
+  font-size: 1em;
+  margin: 0px;
+  height: 1em;
+  width: 100%;
+  line-height: 2.00; /* Key property */
+
+}
+
+input.input-outline{
+  border: 0;
+  outline: 0;
+  background: transparent !important;
+  background-color: transparent !important;
+  font-size: 1em;
+  margin: 0px;
+  height: 1em;
+  width: 100%;
+  line-height: 2.00; /* Key property */
+  border-bottom: 1px solid #EAEAEA;
+}
+
+.odd-tr{
+  background: #FAFAFA;
+  background-color: #FAFAFA;
+}
+
+.even-tr{
+  background: transparent;
+  background-color: transparent;
+}
+
+.prettyTable th { text-align: left; }
+.prettyTable td { text-align:left; }
+.prettyTable th:first-child, .prettyTable td:first-child { text-align: left; padding-left: 10px; }
+.prettyTable th:last-child, .prettyTable td:last-child { text-align: left; padding-left: 10px; }

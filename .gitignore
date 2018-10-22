@@ -3,14 +3,23 @@ venv/
 __pycache__
 *.un*
 *.sw*
+*.log
+*.pot
+*.pyc
+local_settings.py
 db.sqlite3
 
 # Node Files
 .DS_Store
 node_modules/
-dist/
-npm-debug.log
-yarn-error.log
+/dist/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+/test/unit/coverage/
+/test/e2e/reports/
+selenium-debug.log
+
 
 # Editor directories and files
 .idea
@@ -18,3 +27,14 @@ yarn-error.log
 *.ntvs*
 *.njsproj
 *.sln
+.venv
+
+# npm build / collectstatic
+webpack-stats.json
+public/
+dist/
+
+
+webpack-stats.json
+public/
+dist/

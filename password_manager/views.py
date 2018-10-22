@@ -26,7 +26,7 @@ class LoginsViewer(View):
         # TODO: adding simple context to test, should change
         context = {}
         context['csrfmiddlewaretoken'] = get_token(request)
-        return render(request, 'logins-viewer.html', context)
+        return render(request, 'index2.html', context)
 
 
 class LoginsBaseView(APIView):

@@ -1,10 +1,22 @@
 from . import views
 from django.conf.urls import url
-
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
+from django.views.generic import TemplateView
 urlpatterns = [
+
     url(r'^$',
-        views.LoginsViewer.as_view(),
+        TemplateView.as_view(template_name='index2.html'),
+        name='uHome'
     ),
+
+
+    #url(r'^$',
+    #    views.LoginsViewer.as_view(),
+    #),
+
+
+
+    
     # generate tempkey
     url(
         r'^user/(?P<user_id>[0-9]+)/temporary_key/?$',
@@ -21,3 +33,5 @@ urlpatterns = [
         views.PasswordItemView.as_view(),
     )
 ]
+
+urlpatterns += staticfiles_urlpatterns()

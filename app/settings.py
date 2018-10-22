@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    'webpack_loader',
+
     'password_manager',
 ]
 
@@ -56,7 +58,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -118,9 +120,42 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
+# TODO: only in Django
+#STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+#STATIC_URL = '/static/'
 
+
+# Add path to STATICFILES_DIRS
+# paste it
+STATIC_URL = '/public/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'public')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'dist'),
+)
+"""
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'dist'),
+    #os.path.join(BASE_DIR, 'static'), Used by Django
+)
+STATIC_ROOT = os.path.join(BASE_DIR, 'public')
 STATIC_URL = '/static/'
+"""
 
+print(STATICFILES_DIRS)
+
+# WEBPACK
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'CACHE': not DEBUG,
+        'BUNDLE_DIR_NAME': '',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+        'POLL_INTERVAL': 0.1,
+        'TIMEOUT': None,
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+    }
+}
+
+# DRF
 REST_FRAMEWORK_DOCS = {
     'HIDE_DOCS': False if DEBUG else True
 }
